@@ -16,6 +16,6 @@ public class PotionEffectSerialiser
 	
 	public static String potionEffectToString(PotionEffect effect)
 	{
-		return effect.getType().toString() + "," + effect.getAmplifier() + "," + effect.getDuration();
+		return effect.getType().getName() + "," + effect.getAmplifier() + "," + effect.getDuration();
 	}
 }

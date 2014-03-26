@@ -1,5 +1,6 @@
 package de.codebucket.customspawners.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -67,10 +68,9 @@ public class PotionData extends SpawnerData
 	public ThrownPotion throwPotion(Location location) 
 	{
 		ThrownPotion potion = location.getWorld().spawn(location, ThrownPotion.class);
-		for(PotionEffect effect : effects)
-		{
-			potion.getEffects().add(effect);
-		}
+		ItemStack item = new ItemStack(Material.POTION, 1);
+		item.setItemMeta(getPotionMeta());
+		potion.setItem(item);
 		return potion;
 	}
 
@@ -79,9 +79,12 @@ public class PotionData extends SpawnerData
 	{
 		ItemStack item = new ItemStack(Material.POTION, 1);
 		PotionMeta meta = (PotionMeta) item.getItemMeta();
-		for(PotionEffect effect : effects)
+		if(effects != null)
 		{
-			meta.addCustomEffect(effect, true);
+			for(PotionEffect effect : effects)
+			{
+				meta.addCustomEffect(effect, true);
+			}
 		}
 		return meta;
 	}
@@ -103,7 +106,11 @@ public class PotionData extends SpawnerData
 		List<PotionEffect> effects = null;
 		if(meta.hasCustomEffects())
 		{
-			effects = meta.getCustomEffects();
+			effects = new ArrayList<>();
+			for(PotionEffect effect : meta.getCustomEffects())
+			{
+				effects.add(effect);
+			}
 		}
     	return new PotionData(effects);
 	}
