@@ -9,8 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 
 import de.codebucket.customspawners.data.EntityData;
 import de.codebucket.customspawners.data.FireworkData;
@@ -271,7 +269,7 @@ public class Commands implements CommandExecutor
 											long ticks = Long.parseLong(args[4]);
 											
 											ItemStack item = p.getInventory().getItemInHand();
-											FireworkData data = FireworkData.getFromMeta((FireworkMeta) item.getItemMeta());											
+											FireworkData data = FireworkData.getFromMeta(item);											
 											CustomSpawner spawner = new CustomSpawner(name, SpawnerType.FIREWORK, data, location, radius, ticks);
 											plugin.getData().addSpawner(spawner);
 											spawner.start();
@@ -325,7 +323,7 @@ public class Commands implements CommandExecutor
 											long ticks = Long.parseLong(args[4]);
 											
 											ItemStack item = p.getInventory().getItemInHand();
-											PotionData data = PotionData.getFromMeta((PotionMeta) item.getItemMeta());										
+											PotionData data = PotionData.getFromMeta(item);										
 											CustomSpawner spawner = new CustomSpawner(name, SpawnerType.POTION, data, location, radius, ticks);
 											plugin.getData().addSpawner(spawner);
 											spawner.start();
@@ -605,7 +603,7 @@ public class Commands implements CommandExecutor
 										boolean ran = spawner.isRunning();
 										spawner.stop();
 										ItemStack item = p.getInventory().getItemInHand();
-										FireworkData data = FireworkData.getFromMeta((FireworkMeta) item.getItemMeta());											
+										FireworkData data = FireworkData.getFromMeta(item);												
 										spawner.setSpawnerData(data);
 										plugin.getData().editSpawner(spawner);
 										spawner.start();
@@ -628,7 +626,7 @@ public class Commands implements CommandExecutor
 										boolean ran = spawner.isRunning();
 										spawner.stop();
 										ItemStack item = p.getInventory().getItemInHand();
-										PotionData data = PotionData.getFromMeta((PotionMeta) item.getItemMeta());										
+										PotionData data = PotionData.getFromMeta(item);										
 										spawner.setSpawnerData(data);
 										plugin.getData().editSpawner(spawner);
 										spawner.start();

@@ -140,44 +140,49 @@ public class FireworkData extends SpawnerData
 		return null;
 	}
 	
-	public static FireworkData getFromMeta(FireworkMeta meta)
+	public static FireworkData getFromMeta(ItemStack item)
 	{
+		FireworkMeta meta = (FireworkMeta) item.getItemMeta();
 		Type fwtype = null;
 		List<Color> fwcolors = null;
 		List<Color> fwfades = null;
 		boolean fwflicker = false;
 		boolean fwtrail = false;
-		int fwpower = meta.getPower();
+		int fwpower = 0;
 		
-		if(meta.hasEffects())
-    	{
-    		FireworkEffect fweffect = meta.getEffects().get(0);	    		
-    		if(fweffect.getType() != null)
-    		{
-    			fwtype = fweffect.getType();
-    		}
-    		
-    		if(fweffect.getColors() != null)
-    		{
-    			fwcolors = new ArrayList<>();
-    	    	for(Color colr : fweffect.getColors())
-    	    	{
-    	    		fwcolors.add(colr);
-    	    	}
-    		}
-    		
-    		if(fweffect.getFadeColors() != null)
-    		{
-    			fwfades = new ArrayList<>();
-    	    	for(Color colr : fweffect.getFadeColors())
-    	    	{
-    	    		fwfades.add(colr);
-    	    	}
-    		}
-    		
-    		fwflicker = fweffect.hasFlicker();
-    		fwtrail = fweffect.hasTrail();
-    	}
+		if(meta != null)
+		{
+			if(meta.hasEffects())
+	    	{
+	    		FireworkEffect fweffect = meta.getEffects().get(0);	    		
+	    		if(fweffect.getType() != null)
+	    		{
+	    			fwtype = fweffect.getType();
+	    		}
+	    		
+	    		if(fweffect.getColors() != null)
+	    		{
+	    			fwcolors = new ArrayList<>();
+	    	    	for(Color colr : fweffect.getColors())
+	    	    	{
+	    	    		fwcolors.add(colr);
+	    	    	}
+	    		}
+	    		
+	    		if(fweffect.getFadeColors() != null)
+	    		{
+	    			fwfades = new ArrayList<>();
+	    	    	for(Color colr : fweffect.getFadeColors())
+	    	    	{
+	    	    		fwfades.add(colr);
+	    	    	}
+	    		}
+	    		
+	    		fwflicker = fweffect.hasFlicker();
+	    		fwtrail = fweffect.hasTrail();
+	    		fwpower = meta.getPower();
+	    	}
+		}
 		return new FireworkData(fwtype, fwcolors, fwfades, fwflicker, fwtrail, fwpower);
 	}
 }

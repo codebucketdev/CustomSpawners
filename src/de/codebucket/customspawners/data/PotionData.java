@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 import de.codebucket.customspawners.particle.Particle;
@@ -101,15 +102,27 @@ public class PotionData extends SpawnerData
 		return null;
 	}
 	
-	public static PotionData getFromMeta(PotionMeta meta)
+	public static PotionData getFromMeta(ItemStack potion)
 	{
 		List<PotionEffect> effects = null;
-		if(meta.hasCustomEffects())
+		PotionMeta meta = (PotionMeta) potion.getItemMeta();
+		
+		Potion ption = Potion.fromItemStack(potion);
+		effects = new ArrayList<>();
+		for(PotionEffect effect : ption.getEffects())
 		{
-			effects = new ArrayList<>();
-			for(PotionEffect effect : meta.getCustomEffects())
+			effects.add(effect);
+		}
+		
+		if(meta != null)
+		{
+			if(meta.hasCustomEffects())
 			{
-				effects.add(effect);
+				effects = new ArrayList<>();
+				for(PotionEffect effect : meta.getCustomEffects())
+				{
+					effects.add(effect);
+				}
 			}
 		}
     	return new PotionData(effects);
