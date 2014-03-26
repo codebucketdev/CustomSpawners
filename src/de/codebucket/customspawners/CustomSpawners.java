@@ -58,9 +58,15 @@ public class CustomSpawners extends JavaPlugin implements Listener
 	   if (!event.isCancelled()) 
 	    {
 	        String msg = event.getMessage().toLowerCase();
-	        if (msg.startsWith("/cs") || msg.startsWith("/cspawners")) 
+	        if (msg.startsWith("/cs")) 
 	        {
 	        	String cmd = msg.substring(3);
+	            getServer().dispatchCommand(event.getPlayer(), "customspawners" + cmd);
+	            event.setCancelled(true);
+	        }
+	        if (msg.startsWith("/cspawners"))
+	        {
+	        	String cmd = msg.substring(10);
 	            getServer().dispatchCommand(event.getPlayer(), "customspawners" + cmd);
 	            event.setCancelled(true);
 	        }

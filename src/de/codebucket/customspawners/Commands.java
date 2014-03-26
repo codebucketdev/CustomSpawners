@@ -10,10 +10,14 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 
 import de.codebucket.customspawners.data.EntityData;
 import de.codebucket.customspawners.data.FireworkData;
 import de.codebucket.customspawners.data.ItemData;
+import de.codebucket.customspawners.data.ParticleData;
+import de.codebucket.customspawners.data.PotionData;
+import de.codebucket.customspawners.particle.Particle;
 import de.codebucket.customspawners.spawner.CustomSpawner;
 import de.codebucket.customspawners.spawner.SpawnerType;
 
@@ -128,13 +132,13 @@ public class Commands implements CommandExecutor
 											if(!isInteger(args[3]))
 											{
 												p.sendMessage(pre + "§c'" + args[3] + "' is not a valid value for radius.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> item <radius> <ticks>");
 												return true;
 											}
 											if(!isInteger(args[4]))
 											{
 												p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for ticks.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> item <radius> <ticks>");
 												return true;
 											}
 										}
@@ -226,13 +230,13 @@ public class Commands implements CommandExecutor
 											if(!isInteger(args[4]))
 											{
 												p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for radius.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> entity <entitytype> <radius> <ticks>");
 												return true;
 											}
 											if(!isInteger(args[5]))
 											{
 												p.sendMessage(pre + "§c'" + args[5] + "' is not a valid value for ticks.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> entity <entitytype> <radius> <ticks>");
 												return true;
 											}
 										}
@@ -280,13 +284,13 @@ public class Commands implements CommandExecutor
 											if(!isInteger(args[3]))
 											{
 												p.sendMessage(pre + "§c'" + args[3] + "' is not a valid value for radius.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> firework <radius> <ticks>");
 												return true;
 											}
 											if(!isInteger(args[4]))
 											{
 												p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for ticks.");
-												p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+												p.sendMessage(pre + "§cUsage: /cs create <name> firework <radius> <ticks>");
 												return true;
 											}
 										}
@@ -302,6 +306,114 @@ public class Commands implements CommandExecutor
 								{
 									p.sendMessage(pre + "§cError in command syntax: Not enough arguments.");
 									p.sendMessage(pre + "§cUsage: /cs create <name> firework <radius> <ticks>");
+									return true;
+								}
+							}
+							else if(type.equalsIgnoreCase("potion"))
+							{
+								if(args.length >= 5)
+								{
+									if(p.getInventory().getItemInHand() != null && p.getInventory().getItemInHand().getType() == Material.POTION)
+									{
+										if(isInteger(args[3]) && isInteger(args[4]))
+										{
+											Location location = p.getLocation();
+											location.setX(location.getBlockX() + 0.5);
+											location.setY(location.getBlockY() + 0.0);
+											location.setZ(location.getBlockZ() + 0.5);
+											int radius = Integer.parseInt(args[3]);
+											long ticks = Long.parseLong(args[4]);
+											
+											ItemStack item = p.getInventory().getItemInHand();
+											PotionData data = PotionData.getFromMeta((PotionMeta) item.getItemMeta());										
+											CustomSpawner spawner = new CustomSpawner(name, SpawnerType.POTION, data, location, radius, ticks);
+											plugin.getData().addSpawner(spawner);
+											spawner.start();
+
+											p.sendMessage(pre + "§aSpawner '" + name + "' sucessfully created!");
+											return true;
+										}
+										else
+										{
+											if(!isInteger(args[3]))
+											{
+												p.sendMessage(pre + "§c'" + args[3] + "' is not a valid value for radius.");
+												p.sendMessage(pre + "§cUsage: /cs create <name> potion <radius> <ticks>");
+												return true;
+											}
+											if(!isInteger(args[4]))
+											{
+												p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for ticks.");
+												p.sendMessage(pre + "§cUsage: /cs create <name> potion <radius> <ticks>");
+												return true;
+											}
+										}
+									}
+									else
+									{
+										p.sendMessage(pre + "§cYou have not selected any potion in your hand!");
+										p.sendMessage(pre + "§cUsage: /cs create <name> potion <radius> <ticks>");
+										return true;
+									}
+								}
+								else 
+								{
+									p.sendMessage(pre + "§cError in command syntax: Not enough arguments.");
+									p.sendMessage(pre + "§cUsage: /cs create <name> potion <radius> <ticks>");
+									return true;
+								}
+							}
+							else if(type.equalsIgnoreCase("particle"))
+							{
+								if(args.length >= 6)
+								{
+									if(isParticle(args[3]))
+									{
+										if(isInteger(args[4]) && isInteger(args[5]))
+										{
+											Location location = p.getLocation();
+											location.setX(location.getBlockX() + 0.5);
+											location.setY(location.getBlockY() + 0.0);
+											location.setZ(location.getBlockZ() + 0.5);
+											Particle particle = Particle.valueOf(args[3].toUpperCase());
+											int radius = Integer.parseInt(args[4]);
+											long ticks = Long.parseLong(args[5]);
+											
+											ParticleData data = ParticleData.getFromParticle(particle);
+											CustomSpawner spawner = new CustomSpawner(name, SpawnerType.PARTICLE, data, location, radius, ticks);
+											plugin.getData().addSpawner(spawner);
+											spawner.start();
+
+											p.sendMessage(pre + "§aSpawner '" + name + "' sucessfully created!");
+											return true;
+										}
+										else
+										{
+											if(!isInteger(args[4]))
+											{
+												p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for radius.");
+												p.sendMessage(pre + "§cUsage: /cs create <name> particle <particletype> <radius> <ticks>");
+												return true;
+											}
+											if(!isInteger(args[5]))
+											{
+												p.sendMessage(pre + "§c'" + args[5] + "' is not a valid value for ticks.");
+												p.sendMessage(pre + "§cUsage: /cs create <name> particle <particletype> <radius> <ticks>");
+												return true;
+											}
+										}
+									}
+									else
+									{
+										p.sendMessage(pre + "§cUnacceptable particle type '" + args[3] + "'.");
+										p.sendMessage(pre + "§cUsage: /cs create <name> particle <particletype> <radius> <ticks>");
+										return true;
+									}
+								}
+								else 
+								{
+									p.sendMessage(pre + "§cError in command syntax: Not enough arguments.");
+									p.sendMessage(pre + "§cUsage: /cs create <name> particle <particletype> <radius> <ticks>");
 									return true;
 								}
 							}
@@ -331,13 +443,13 @@ public class Commands implements CommandExecutor
 										if(!isInteger(args[3]))
 										{
 											p.sendMessage(pre + "§c'" + args[3] + "' is not a valid value for radius.");
-											p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+											p.sendMessage(pre + "§cUsage: /cs create <name> boat <radius> <ticks>");
 											return true;
 										}
 										if(!isInteger(args[4]))
 										{
 											p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for ticks.");
-											p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+											p.sendMessage(pre + "§cUsage: /cs create <name> boat <radius> <ticks>");
 											return true;
 										}
 									}
@@ -375,13 +487,13 @@ public class Commands implements CommandExecutor
 										if(!isInteger(args[3]))
 										{
 											p.sendMessage(pre + "§c'" + args[3] + "' is not a valid value for radius.");
-											p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+											p.sendMessage(pre + "§cUsage: /cs create <name> minecart <radius> <ticks>");
 											return true;
 										}
 										if(!isInteger(args[4]))
 										{
 											p.sendMessage(pre + "§c'" + args[4] + "' is not a valid value for ticks.");
-											p.sendMessage(pre + "§cUsage: /cs create <name> exp <radius> <ticks>");
+											p.sendMessage(pre + "§cUsage: /cs create <name> minecart <radius> <ticks>");
 											return true;
 										}
 									}
@@ -396,7 +508,7 @@ public class Commands implements CommandExecutor
 							else 
 							{
 								p.sendMessage(pre + "§cUnacceptable spawner type '" + type + "'.");
-								p.sendMessage(pre + "§cAcceptable types: item, exp, entity, firework, boat, minecart");
+								p.sendMessage(pre + "§cAcceptable types: item, exp, entity, firework, potion, particle, boat, minecart");
 								return true;
 							}
 						}
@@ -506,6 +618,61 @@ public class Commands implements CommandExecutor
 									{
 										p.sendMessage(pre + "§cYou have not selected any firework in your hand!");
 										p.sendMessage(pre + "§cUsage: /cs modify <name> content");
+										return true;
+									}
+								}
+								else if(spawner.getSpawnerType() == SpawnerType.POTION)
+								{
+									if(p.getInventory().getItemInHand() != null && p.getInventory().getItemInHand().getType() == Material.POTION)
+									{
+										boolean ran = spawner.isRunning();
+										spawner.stop();
+										ItemStack item = p.getInventory().getItemInHand();
+										PotionData data = PotionData.getFromMeta((PotionMeta) item.getItemMeta());										
+										spawner.setSpawnerData(data);
+										plugin.getData().editSpawner(spawner);
+										spawner.start();
+										if(ran == true) spawner.start();
+
+										p.sendMessage(pre + "§aPotions from spawner '" + name + "' sucessfully modified!");
+										return true;
+									}
+									else
+									{
+										p.sendMessage(pre + "§cYou have not selected any potion in your hand!");
+										p.sendMessage(pre + "§cUsage: /cs modify <name> content");
+										return true;
+									}
+								}
+								else if(spawner.getSpawnerType() == SpawnerType.PARTICLE)
+								{
+									if(args.length >= 4)
+									{
+										if(isParticle(args[3]))
+										{
+											boolean ran = spawner.isRunning();
+											spawner.stop();
+											Particle particle = Particle.valueOf(args[3].toUpperCase());										
+											ParticleData data = ParticleData.getFromParticle(particle);
+											spawner.setSpawnerData(data);
+											plugin.getData().editSpawner(spawner);
+											spawner.start();
+											if(ran == true) spawner.start();
+	
+											p.sendMessage(pre + "§aParticle from spawner '" + name + "' sucessfully modified!");
+											return true;
+										}
+										else
+										{
+											p.sendMessage(pre + "§cUnacceptable particle type '" + args[3] + "'.");
+											p.sendMessage(pre + "§cUsage: /cs modify <name> content <particletype>");
+											return true;
+										}
+									}
+									else 
+									{
+										p.sendMessage(pre + "§cError in command syntax: Not enough arguments.");
+										p.sendMessage(pre + "§cUsage: /cs modify <name> content <particletype>");
 										return true;
 									}
 								}
@@ -815,6 +982,19 @@ public class Commands implements CommandExecutor
 		try
 		{
 			EntityType.valueOf(entity.toUpperCase());
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+	
+	private boolean isParticle(String particle)
+	{
+		try
+		{
+			Particle.valueOf(particle.toUpperCase());
 			return true;
 		}
 		catch(Exception e)

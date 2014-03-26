@@ -7,6 +7,9 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+
+import de.codebucket.customspawners.particle.Particle;
 
 public class EntityData extends SpawnerData
 {
@@ -53,5 +56,29 @@ public class EntityData extends SpawnerData
 	public EntityType getEntityType() 
 	{
 		return type;
+	}
+
+	@Override
+	public Entity throwPotion(Location location)
+	{
+		return null;
+	}
+
+	@Override
+	public PotionMeta getPotionMeta() 
+	{
+		return null;
+	}
+
+	@Override
+	public boolean playParticle(Location location) 
+	{
+		return false;
+	}
+
+	@Override
+	public Particle getParticle() 
+	{
+		return null;
 	}
 }

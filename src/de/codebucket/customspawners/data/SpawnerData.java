@@ -7,6 +7,9 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+
+import de.codebucket.customspawners.particle.Particle;
 
 public abstract class SpawnerData
 {
@@ -14,7 +17,9 @@ public abstract class SpawnerData
 	{
 		ITEM,
 		ENTITY,
-		FIREWORK;
+		FIREWORK,
+		POTION,
+		PARTICLE;
 	}
 	
 	private DataType type;
@@ -40,4 +45,9 @@ public abstract class SpawnerData
 	public abstract FireworkMeta getFireworkMeta();
 	public abstract Entity spawnEntity(Location location);
 	public abstract EntityType getEntityType();
+	public abstract Entity throwPotion(Location location);
+	public abstract PotionMeta getPotionMeta();
+	public abstract boolean playParticle(Location location);
+	public abstract Particle getParticle();
+	
 }

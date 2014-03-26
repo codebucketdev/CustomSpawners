@@ -15,20 +15,23 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+
+import de.codebucket.customspawners.particle.Particle;
 
 public class FireworkData extends SpawnerData
 {
-	private Type fwtype;
+	private Type type;
 	private List<Color> colors;
 	private List<Color> fades;
 	private boolean flicker;
 	private boolean trail;
 	private int power;
 	
-	public FireworkData(Type fwtype, List<Color> colors, List<Color> fades, boolean flicker, boolean trail, int power)
+	public FireworkData(Type type, List<Color> colors, List<Color> fades, boolean flicker, boolean trail, int power)
 	{
 		super(DataType.FIREWORK);
-		this.fwtype = fwtype;
+		this.type = type;
 		this.colors = colors;
 		this.fades = fades;
 		this.flicker = flicker;
@@ -55,9 +58,9 @@ public class FireworkData extends SpawnerData
         FireworkMeta meta = fw.getFireworkMeta();
         Builder effect = FireworkEffect.builder();
        
-        if(fwtype != null) 
+        if(type != null) 
         {
-        	effect.with(fwtype);
+        	effect.with(type);
         }
         
         if(colors != null)
@@ -112,6 +115,30 @@ public class FireworkData extends SpawnerData
 	{
 		return null;
 	}
+
+	@Override
+	public Entity throwPotion(Location location)
+	{
+		return null;
+	}
+
+	@Override
+	public PotionMeta getPotionMeta() 
+	{
+		return null;
+	}
+
+	@Override
+	public boolean playParticle(Location location) 
+	{
+		return false;
+	}
+
+	@Override
+	public Particle getParticle()
+	{
+		return null;
+	}
 	
 	public static FireworkData getFromMeta(FireworkMeta meta)
 	{
@@ -127,7 +154,7 @@ public class FireworkData extends SpawnerData
     		FireworkEffect fweffect = meta.getEffects().get(0);	    		
     		if(fweffect.getType() != null)
     		{
-    	    	fwtype = fweffect.getType();
+    			fwtype = fweffect.getType();
     		}
     		
     		if(fweffect.getColors() != null)

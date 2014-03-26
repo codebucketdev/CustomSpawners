@@ -19,15 +19,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import de.codebucket.customspawners.data.EntityData;
 import de.codebucket.customspawners.data.FireworkData;
 import de.codebucket.customspawners.data.ItemData;
+import de.codebucket.customspawners.data.ParticleData;
+import de.codebucket.customspawners.data.PotionData;
+import de.codebucket.customspawners.particle.Particle;
 import de.codebucket.customspawners.spawner.CustomSpawner;
 import de.codebucket.customspawners.spawner.SpawnerType;
 import de.codebucket.customspawners.util.ColorSerialiser;
 import de.codebucket.customspawners.util.ItemSerialiser;
 import de.codebucket.customspawners.util.LocationSerialiser;
+import de.codebucket.customspawners.util.PotionEffectSerialiser;
 
 public class ConfigData 
 {
@@ -205,6 +210,44 @@ public class ConfigData
 		    	CustomSpawner spawner = new CustomSpawner(section, type, fwdata, location, radius, ticks);
 		    	spawners.add(spawner);
 		    }
+		    else if(type == SpawnerType.POTION)
+		    {
+		    	ConfigurationSection pts = cs.getConfigurationSection("potiondata");
+		    	List<PotionEffect> effects = null;
+		    	
+		    	if(pts.isSet("effects"))
+		    	{
+		    		effects = new ArrayList<>();
+		    		for(String effct : pts.getStringList("effects"))
+		    		{
+		    			PotionEffect effect = PotionEffectSerialiser.stringToPotionEffect(effct);
+		    			effects.add(effect);
+		    		}
+		    	}
+		    	
+		    	Location location = LocationSerialiser.stringToLocationEntity(cs.getString("location"));
+		    	int radius = cs.getInt("radius");
+		    	long ticks = cs.getLong("ticks");
+		    	
+		    	PotionData ptdata = new PotionData(effects);
+		    	CustomSpawner spawner = new CustomSpawner(section, type, ptdata, location, radius, ticks);
+		    	spawners.add(spawner);
+		    }
+		    else if(type == SpawnerType.PARTICLE)
+		    {
+		    	ConfigurationSection pcs = cs.getConfigurationSection("particledata");
+		    	Particle particle = Particle.valueOf(pcs.getString("particle").toUpperCase());
+		    	float speed = (float) pcs.getDouble("speed");
+		    	int amount = pcs.getInt("amount");
+		    	
+		    	Location location = LocationSerialiser.stringToLocationEntity(cs.getString("location"));
+		    	int radius = cs.getInt("radius");
+		    	long ticks = cs.getLong("ticks");
+		    	
+		    	ParticleData ptdata = new ParticleData(particle, speed, amount);
+		    	CustomSpawner spawner = new CustomSpawner(section, type, ptdata, location, radius, ticks);
+		    	spawners.add(spawner);
+		    }
 		    else if(type == SpawnerType.BOAT)
 		    {
 		    	Location location = LocationSerialiser.stringToLocationEntity(cs.getString("location"));
@@ -351,6 +394,43 @@ public class ConfigData
 	    	}
 	    	
 	    	fws.set("power", spawner.getSpawnerData().getFireworkMeta().getPower());
+	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
+	    	cs.set("radius", spawner.getRadius());
+	    	cs.set("ticks", spawner.getTicks());
+	    	spawners.add(spawner);
+	    	this.saveConfig();
+	    }
+	    else if(spawner.getSpawnerType() == SpawnerType.POTION)
+	    {
+			cs.set("type", spawner.getSpawnerType().toString());
+	    	ConfigurationSection pts = cs.getConfigurationSection("potiondata");
+	    	if(pts == null) pts = cs.createSection("potiondata");
+	    	if(spawner.getSpawnerData().getPotionMeta().hasCustomEffects())
+	    	{
+	    		List<String> effects = new ArrayList<>();
+	    		for(PotionEffect effct : spawner.getSpawnerData().getPotionMeta().getCustomEffects())
+	    		{
+	    			String effect = PotionEffectSerialiser.potionEffectToString(effct);
+	    			effects.add(effect);
+	    		}
+	    		pts.set("effects", effects);
+	    	}
+	    	
+	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
+	    	cs.set("radius", spawner.getRadius());
+	    	cs.set("ticks", spawner.getTicks());
+	    	spawners.add(spawner);
+	    	this.saveConfig();
+	    }
+	    else if(spawner.getSpawnerType() == SpawnerType.PARTICLE)
+	    {
+			cs.set("type", spawner.getSpawnerType().toString());
+	    	ConfigurationSection pcs = cs.getConfigurationSection("particledata");
+	    	if(pcs == null) pcs = cs.createSection("particledata");
+	    	pcs.set("particle", spawner.getSpawnerData().getParticle().getParticleName());
+	    	pcs.set("speed", spawner.getSpawnerData().getParticle().getDefaultSpeed());
+	    	pcs.set("amount", spawner.getSpawnerData().getParticle().getParticleAmount());
+	    	
 	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
 	    	cs.set("radius", spawner.getRadius());
 	    	cs.set("ticks", spawner.getTicks());
