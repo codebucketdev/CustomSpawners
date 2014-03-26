@@ -121,6 +121,48 @@ public class CustomSpawner implements Runnable
 				}
 			}
 		}
+		else if(type == SpawnerType.POTION)
+		{
+			double x = 0.0;
+			double y = 0.0;
+			double z = 0.0;
+			if(radius > 0)
+			{
+				x = (double)getRandomInt((radius * -1), (radius * 1));
+				z = (double)getRandomInt((radius * -1), (radius * 1));
+			}
+			Location loc = location.clone().add(x, y, z);
+			loc.setPitch(0.0F);
+			loc.setYaw(0.0F);
+			if(loc.getWorld().getChunkAt(loc).isLoaded())
+			{
+				if(arePlayersInRange(loc))
+				{
+					data.throwPotion(loc);
+				}
+			}
+		}
+		else if(type == SpawnerType.PARTICLE)
+		{
+			double x = 0.0;
+			double y = 0.0;
+			double z = 0.0;
+			if(radius > 0)
+			{
+				x = (double)getRandomInt((radius * -1), (radius * 1));
+				z = (double)getRandomInt((radius * -1), (radius * 1));
+			}
+			Location loc = location.clone().add(x, y, z);
+			loc.setPitch(0.0F);
+			loc.setYaw(0.0F);
+			if(loc.getWorld().getChunkAt(loc).isLoaded())
+			{
+				if(arePlayersInRange(loc))
+				{
+					data.playParticle(loc);
+				}
+			}
+		}
 		else if(type == SpawnerType.BOAT)
 		{
 			double x = 0.0;
