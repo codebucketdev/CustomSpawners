@@ -64,7 +64,7 @@ public enum Particle
 		return this.defaultSpeed;
 	}
 
-	public Particle getParticleByName(String s) 
+	public static Particle getParticleByName(String s) 
 	{
 		for (Particle sp : values())
 		{

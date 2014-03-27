@@ -236,7 +236,7 @@ public class ConfigData
 		    else if(type == SpawnerType.PARTICLE)
 		    {
 		    	ConfigurationSection pcs = cs.getConfigurationSection("particledata");
-		    	Particle particle = Particle.valueOf(pcs.getString("particle").toUpperCase());
+		    	Particle particle = Particle.getParticleByName(pcs.getString("particle"));
 		    	float speed = (float) pcs.getDouble("speed");
 		    	int amount = pcs.getInt("amount");
 		    	
