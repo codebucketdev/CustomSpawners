@@ -9,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -33,6 +34,14 @@ public class ItemData extends SpawnerData
 		this.displayname = displayname;
 		this.lore = lore;
 		this.enchantments = enchantments;
+	}
+	
+	@Override
+	public Item dropItem(Location location)
+	{
+		Item item = location.getWorld().spawn(location, Item.class);
+		item.setItemStack(getItemStack());
+		return item;
 	}
 	
 	@Override
@@ -64,6 +73,12 @@ public class ItemData extends SpawnerData
 	{
 		return null;
 	}
+	
+	@Override
+	public ItemStack getFireworkItem()
+	{
+		return null;
+	}
 
 	@Override
 	public FireworkMeta getFireworkMeta() 
@@ -85,6 +100,12 @@ public class ItemData extends SpawnerData
 
 	@Override
 	public Entity throwPotion(Location location) 
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getPotionItem()
 	{
 		return null;
 	}

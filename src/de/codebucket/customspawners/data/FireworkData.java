@@ -3,15 +3,16 @@ package de.codebucket.customspawners.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,7 +41,13 @@ public class FireworkData extends SpawnerData
 	}
 
 	@Override
-	public ItemStack getItemStack() 
+	public Item dropItem(Location location)
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getItemStack()
 	{
 		return null;
 	}
@@ -55,7 +62,15 @@ public class FireworkData extends SpawnerData
 	public Firework spawnFirework(Location location) 
 	{
         Firework fw = location.getWorld().spawn(location, Firework.class);
-        FireworkMeta meta = fw.getFireworkMeta();
+        fw.setFireworkMeta(getFireworkMeta());
+		return fw;
+	}
+	
+	@Override
+	public ItemStack getFireworkItem()
+	{
+		ItemStack item = new ItemStack(Material.FIREWORK, 1);
+		FireworkMeta meta = (FireworkMeta) item.getItemMeta();
         Builder effect = FireworkEffect.builder();
        
         if(type != null) 
@@ -91,17 +106,14 @@ public class FireworkData extends SpawnerData
         
         meta.addEffect(effect.build());
         meta.setPower(power);
-        fw.setFireworkMeta(meta);
-		return fw;
+        item.setItemMeta(meta);
+        return item;
 	}
 
 	@Override
 	public FireworkMeta getFireworkMeta()
 	{
-		Firework fw = spawnFirework(Bukkit.getWorlds().get(0).getSpawnLocation());
-		FireworkMeta meta = fw.getFireworkMeta();
-		fw.remove();
-		return meta;
+		return (FireworkMeta) getFireworkItem().getItemMeta();
 	}
 
 	@Override
@@ -118,6 +130,12 @@ public class FireworkData extends SpawnerData
 
 	@Override
 	public Entity throwPotion(Location location)
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getPotionItem()
 	{
 		return null;
 	}

@@ -53,7 +53,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					loc.getWorld().dropItemNaturally(loc, data.getItemStack());
+					data.dropItem(loc);
 				}
 			}
 		}

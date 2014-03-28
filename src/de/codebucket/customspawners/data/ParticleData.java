@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -35,6 +36,12 @@ public class ParticleData extends SpawnerData
 	}
 
 	@Override
+	public Item dropItem(Location location)
+	{
+		return null;
+	}
+	
+	@Override
 	public ItemStack getItemStack() 
 	{
 		return null;
@@ -48,6 +55,12 @@ public class ParticleData extends SpawnerData
 
 	@Override
 	public Firework spawnFirework(Location location) 
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getFireworkItem() 
 	{
 		return null;
 	}
@@ -72,6 +85,12 @@ public class ParticleData extends SpawnerData
 
 	@Override
 	public Entity throwPotion(Location location) 
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getPotionItem() 
 	{
 		return null;
 	}
@@ -128,4 +147,5 @@ public class ParticleData extends SpawnerData
 		}
 		return players;
 	}
+	
 }

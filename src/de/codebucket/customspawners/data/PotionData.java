@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -30,6 +31,12 @@ public class PotionData extends SpawnerData
 	}
 	
 	@Override
+	public Item dropItem(Location location)
+	{
+		return null;
+	}
+	
+	@Override
 	public ItemStack getItemStack()
 	{
 		return null;
@@ -43,6 +50,12 @@ public class PotionData extends SpawnerData
 
 	@Override
 	public Firework spawnFirework(Location location) 
+	{
+		return null;
+	}
+	
+	@Override
+	public ItemStack getFireworkItem()
 	{
 		return null;
 	}
@@ -69,14 +82,12 @@ public class PotionData extends SpawnerData
 	public ThrownPotion throwPotion(Location location) 
 	{
 		ThrownPotion potion = location.getWorld().spawn(location, ThrownPotion.class);
-		ItemStack item = new ItemStack(Material.POTION, 1);
-		item.setItemMeta(getPotionMeta());
-		potion.setItem(item);
+		potion.setItem(getPotionItem());
 		return potion;
 	}
-
+	
 	@Override
-	public PotionMeta getPotionMeta() 
+	public ItemStack getPotionItem()
 	{
 		ItemStack item = new ItemStack(Material.POTION, 1);
 		PotionMeta meta = (PotionMeta) item.getItemMeta();
@@ -87,7 +98,14 @@ public class PotionData extends SpawnerData
 				meta.addCustomEffect(effect, true);
 			}
 		}
-		return meta;
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	@Override
+	public PotionMeta getPotionMeta() 
+	{
+		return (PotionMeta) getPotionItem().getItemMeta();
 	}
 
 	@Override
@@ -106,7 +124,6 @@ public class PotionData extends SpawnerData
 	{
 		List<PotionEffect> effects = null;
 		PotionMeta meta = (PotionMeta) potion.getItemMeta();
-		
 		Potion ption = Potion.fromItemStack(potion);
 		effects = new ArrayList<>();
 		for(PotionEffect effect : ption.getEffects())
