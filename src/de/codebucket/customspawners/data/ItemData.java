@@ -39,7 +39,7 @@ public class ItemData extends SpawnerData
 	@Override
 	public Item dropItem(Location location)
 	{
-		Item item = location.getWorld().spawn(location, Item.class);
+		Item item = location.getWorld().dropItem(location, getItemStack());
 		item.setItemStack(getItemStack());
 		return item;
 	}
