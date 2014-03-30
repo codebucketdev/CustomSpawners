@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.util.Vector;
 
 import de.codebucket.customspawners.particle.Particle;
 
@@ -40,7 +41,7 @@ public class ItemData extends SpawnerData
 	public Item dropItem(Location location)
 	{
 		Item item = location.getWorld().dropItem(location, getItemStack());
-		item.setItemStack(getItemStack());
+		item.setVelocity(new Vector(0.0, 0.0, 0.0));
 		return item;
 	}
 	
