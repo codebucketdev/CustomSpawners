@@ -294,21 +294,22 @@ public class ConfigData
 		if(cs == null) cs = config.createSection("spawners." + spawner.getName());
 		if(spawner.getSpawnerType() == SpawnerType.ITEM)
 	    {
+			ItemData data = (ItemData) spawner.getSpawnerData();
 			cs.set("type", spawner.getSpawnerType().toString());
 	    	ConfigurationSection ics = cs.getConfigurationSection("itemdata");
 	    	if(ics == null) ics = cs.createSection("itemdata");
-	    	ics.set("material", ItemSerialiser.itemToString(spawner.getSpawnerData().getItemStack()));
-	    	if(spawner.getSpawnerData().getItemStack().hasItemMeta())
+	    	ics.set("material", ItemSerialiser.itemToString(data.getItemStack()));
+	    	if(data.getItemStack().hasItemMeta())
 	    	{
-	    		if(spawner.getSpawnerData().getItemMeta().getDisplayName() != null)
+	    		if(data.getItemMeta().getDisplayName() != null)
 	    		{
-	    			ics.set("displayname", decodeColors(spawner.getSpawnerData().getItemMeta().getDisplayName()));
+	    			ics.set("displayname", decodeColors(data.getItemMeta().getDisplayName()));
 	    		}
 	    		
-	    		if(spawner.getSpawnerData().getItemMeta().getLore() != null)
+	    		if(data.getItemMeta().getLore() != null)
 	    		{
 	    			List<String> lore = new ArrayList<>();
-	    			List<String> desc = spawner.getSpawnerData().getItemMeta().getLore();
+	    			List<String> desc = data.getItemMeta().getLore();
 	    	    	for(String disp : desc)
 	    	    	{
 	    	    		lore.add(decodeColors(disp));
@@ -316,10 +317,10 @@ public class ConfigData
 	    	    	ics.set("lore", lore);
 	    		}
 	    		
-	    		if(spawner.getSpawnerData().getItemMeta().hasEnchants())
+	    		if(data.getItemMeta().hasEnchants())
 	    		{
 	    			List<String> enchantments = new ArrayList<>();
-	    			Map<Enchantment, Integer> enchs = spawner.getSpawnerData().getItemMeta().getEnchants();
+	    			Map<Enchantment, Integer> enchs = data.getItemMeta().getEnchants();
 	    	    	for(Enchantment ench : enchs.keySet())
 	    	    	{
 	    	    		String enchantment = ench.getName().toUpperCase() + "," + enchs.get(ench);
@@ -346,8 +347,9 @@ public class ConfigData
 	    }
 	    else if(spawner.getSpawnerType() == SpawnerType.ENTITY)
 	    {
+	    	EntityData data = (EntityData) spawner.getSpawnerData();
 	    	cs.set("type", spawner.getSpawnerType().toString());
-	    	cs.set("entity", spawner.getSpawnerData().getEntityType().toString());
+	    	cs.set("entity", data.getEntityType().toString());
 	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
 	    	cs.set("radius", spawner.getRadius());
 	    	cs.set("ticks", spawner.getTicks());
@@ -356,12 +358,13 @@ public class ConfigData
 	    }
 	    else if(spawner.getSpawnerType() == SpawnerType.FIREWORK)
 	    {
+	    	FireworkData data = (FireworkData) spawner.getSpawnerData();
 			cs.set("type", spawner.getSpawnerType().toString());
 	    	ConfigurationSection fws = cs.getConfigurationSection("fireworkdata");
 	    	if(fws == null) fws = cs.createSection("fireworkdata");
-	    	if(spawner.getSpawnerData().getFireworkMeta().hasEffects())
+	    	if(data.getFireworkMeta().hasEffects())
 	    	{
-	    		FireworkEffect fweffect = spawner.getSpawnerData().getFireworkMeta().getEffects().get(0);	    		
+	    		FireworkEffect fweffect = data.getFireworkMeta().getEffects().get(0);	    		
 	    		if(fweffect.getType() != null)
 	    		{
 	    	    	fws.set("type", fweffect.getType().toString());
@@ -393,7 +396,7 @@ public class ConfigData
 	    		fws.set("trail", fweffect.hasTrail());
 	    	}
 	    	
-	    	fws.set("power", spawner.getSpawnerData().getFireworkMeta().getPower());
+	    	fws.set("power", data.getFireworkMeta().getPower());
 	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
 	    	cs.set("radius", spawner.getRadius());
 	    	cs.set("ticks", spawner.getTicks());
@@ -402,13 +405,14 @@ public class ConfigData
 	    }
 	    else if(spawner.getSpawnerType() == SpawnerType.POTION)
 	    {
+	    	PotionData data = (PotionData) spawner.getSpawnerData();
 			cs.set("type", spawner.getSpawnerType().toString());
 	    	ConfigurationSection pts = cs.getConfigurationSection("potiondata");
 	    	if(pts == null) pts = cs.createSection("potiondata");
-	    	if(spawner.getSpawnerData().getPotionMeta().hasCustomEffects())
+	    	if(data.getPotionMeta().hasCustomEffects())
 	    	{
 	    		List<String> effects = new ArrayList<>();
-	    		for(PotionEffect effct : spawner.getSpawnerData().getPotionMeta().getCustomEffects())
+	    		for(PotionEffect effct : data.getPotionMeta().getCustomEffects())
 	    		{
 	    			String effect = PotionEffectSerialiser.potionEffectToString(effct);
 	    			effects.add(effect);
@@ -424,12 +428,13 @@ public class ConfigData
 	    }
 	    else if(spawner.getSpawnerType() == SpawnerType.PARTICLE)
 	    {
+	    	ParticleData data = (ParticleData) spawner.getSpawnerData();
 			cs.set("type", spawner.getSpawnerType().toString());
 	    	ConfigurationSection pcs = cs.getConfigurationSection("particledata");
 	    	if(pcs == null) pcs = cs.createSection("particledata");
-	    	pcs.set("particle", spawner.getSpawnerData().getParticle().getParticleName());
-	    	pcs.set("speed", spawner.getSpawnerData().getParticle().getDefaultSpeed());
-	    	pcs.set("amount", spawner.getSpawnerData().getParticle().getParticleAmount());
+	    	pcs.set("particle", data.getParticle().getParticleName());
+	    	pcs.set("speed", data.getParticle().getDefaultSpeed());
+	    	pcs.set("amount", data.getParticle().getParticleAmount());
 	    	
 	    	cs.set("location", LocationSerialiser.locationEntityToString(spawner.getLocation()));
 	    	cs.set("radius", spawner.getRadius());

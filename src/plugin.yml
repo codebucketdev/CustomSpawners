@@ -1,6 +1,6 @@
 name: CustomSpawners
 author: Codebucket
-version: 1.4 Release
+version: 1.5 Release
 main: de.codebucket.customspawners.CustomSpawners
 website: http://www.codebucket.de
 commands:

@@ -9,16 +9,9 @@ import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-
-import de.codebucket.customspawners.particle.Particle;
 
 public class FireworkData extends SpawnerData
 {
@@ -39,26 +32,7 @@ public class FireworkData extends SpawnerData
 		this.trail = trail;
 		this.power = power;
 	}
-
-	@Override
-	public Item dropItem(Location location)
-	{
-		return null;
-	}
 	
-	@Override
-	public ItemStack getItemStack()
-	{
-		return null;
-	}
-
-	@Override
-	public ItemMeta getItemMeta() 
-	{
-		return null;
-	}
-
-	@Override
 	public Firework spawnFirework(Location location) 
 	{
         Firework fw = location.getWorld().spawn(location, Firework.class);
@@ -66,7 +40,6 @@ public class FireworkData extends SpawnerData
 		return fw;
 	}
 	
-	@Override
 	public ItemStack getFireworkItem()
 	{
 		ItemStack item = new ItemStack(Material.FIREWORK, 1);
@@ -110,52 +83,9 @@ public class FireworkData extends SpawnerData
         return item;
 	}
 
-	@Override
 	public FireworkMeta getFireworkMeta()
 	{
 		return (FireworkMeta) getFireworkItem().getItemMeta();
-	}
-
-	@Override
-	public Entity spawnEntity(Location location) 
-	{
-		return null;
-	}
-
-	@Override
-	public EntityType getEntityType()
-	{
-		return null;
-	}
-
-	@Override
-	public Entity throwPotion(Location location)
-	{
-		return null;
-	}
-	
-	@Override
-	public ItemStack getPotionItem()
-	{
-		return null;
-	}
-
-	@Override
-	public PotionMeta getPotionMeta() 
-	{
-		return null;
-	}
-
-	@Override
-	public boolean playParticle(Location location) 
-	{
-		return false;
-	}
-
-	@Override
-	public Particle getParticle()
-	{
-		return null;
 	}
 	
 	public static FireworkData getFromMeta(ItemStack item)
@@ -203,4 +133,5 @@ public class FireworkData extends SpawnerData
 		}
 		return new FireworkData(fwtype, fwcolors, fwfades, fwflicker, fwtrail, fwpower);
 	}
+	
 }

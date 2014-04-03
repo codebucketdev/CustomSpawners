@@ -6,18 +6,10 @@ import java.util.Map;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.util.Vector;
-
-import de.codebucket.customspawners.particle.Particle;
-
 
 public class ItemData extends SpawnerData
 {
@@ -37,7 +29,6 @@ public class ItemData extends SpawnerData
 		this.enchantments = enchantments;
 	}
 	
-	@Override
 	public Item dropItem(Location location)
 	{
 		Item item = location.getWorld().dropItem(location, getItemStack());
@@ -45,7 +36,6 @@ public class ItemData extends SpawnerData
 		return item;
 	}
 	
-	@Override
 	public ItemStack getItemStack()
 	{
 		ItemStack item = new ItemStack(material, 1, data);
@@ -63,70 +53,9 @@ public class ItemData extends SpawnerData
 		return item;
 	}
 	
-	@Override
 	public ItemMeta getItemMeta()
 	{
 		return getItemStack().getItemMeta();
-	}
-
-	@Override
-	public Firework spawnFirework(Location location) 
-	{
-		return null;
-	}
-	
-	@Override
-	public ItemStack getFireworkItem()
-	{
-		return null;
-	}
-
-	@Override
-	public FireworkMeta getFireworkMeta() 
-	{
-		return null;
-	}
-
-	@Override
-	public Entity spawnEntity(Location location)
-	{
-		return null;
-	}
-
-	@Override
-	public EntityType getEntityType() 
-	{
-		return null;
-	}
-
-	@Override
-	public Entity throwPotion(Location location) 
-	{
-		return null;
-	}
-	
-	@Override
-	public ItemStack getPotionItem()
-	{
-		return null;
-	}
-
-	@Override
-	public PotionMeta getPotionMeta() 
-	{
-		return null;
-	}
-
-	@Override
-	public boolean playParticle(Location location) 
-	{
-		return false;
-	}
-
-	@Override
-	public Particle getParticle() 
-	{
-		return null;
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -12,6 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.codebucket.customspawners.CustomSpawners;
+import de.codebucket.customspawners.data.EntityData;
+import de.codebucket.customspawners.data.FireworkData;
+import de.codebucket.customspawners.data.ItemData;
+import de.codebucket.customspawners.data.ParticleData;
+import de.codebucket.customspawners.data.PotionData;
 import de.codebucket.customspawners.data.SpawnerData;
 
 public class CustomSpawner implements Runnable
@@ -53,7 +58,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.dropItem(loc);
+					((ItemData) data).dropItem(loc);
 				}
 			}
 		}
@@ -72,7 +77,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					ExperienceOrb exp = (ExperienceOrb)data.spawnEntity(loc);
+					ExperienceOrb exp = (ExperienceOrb)((EntityData) data).spawnEntity(loc);
 					exp.setExperience(1);
 				}
 			}
@@ -94,7 +99,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.spawnEntity(loc);
+					((EntityData) data).spawnEntity(loc);
 				}
 			}
 		}
@@ -113,8 +118,8 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					Firework fw = data.spawnFirework(loc);
-					if(data.getFireworkMeta().getPower() <= 0)
+					Firework fw = ((FireworkData) data).spawnFirework(loc);
+					if(fw.getFireworkMeta().getPower() <= 0)
 					{
 						fw.detonate();
 					}
@@ -138,7 +143,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.throwPotion(loc);
+					((PotionData) data).throwPotion(loc);
 				}
 			}
 		}
@@ -159,7 +164,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.playParticle(loc);
+					((ParticleData) data).playParticle(loc);
 				}
 			}
 		}
@@ -178,7 +183,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.spawnEntity(loc);
+					((EntityData) data).spawnEntity(loc);
 				}
 			}
 		}
@@ -197,7 +202,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					data.spawnEntity(loc);
+					((EntityData) data).spawnEntity(loc);
 				}
 			}
 		}
