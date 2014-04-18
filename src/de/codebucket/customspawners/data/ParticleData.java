@@ -46,7 +46,6 @@ public class ParticleData extends SpawnerData
 		}
 		return true;
 	}
-
 	
 	public Particle getParticle() 
 	{

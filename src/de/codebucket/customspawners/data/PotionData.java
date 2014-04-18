@@ -28,7 +28,6 @@ public class PotionData extends SpawnerData
 		return potion;
 	}
 	
-	
 	public ItemStack getPotionItem()
 	{
 		ItemStack item = new ItemStack(Material.POTION, 1);

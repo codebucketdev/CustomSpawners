@@ -6,9 +6,14 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.codebucket.customspawners.CustomSpawners;
@@ -58,7 +63,9 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					((ItemData) data).dropItem(loc);
+					Item item = ((ItemData) data).dropItem(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(item, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -78,7 +85,8 @@ public class CustomSpawner implements Runnable
 				if(arePlayersInRange(loc))
 				{
 					ExperienceOrb exp = (ExperienceOrb)((EntityData) data).spawnEntity(loc);
-					exp.setExperience(1);
+					CustomSpawnEvent event = new CustomSpawnEvent(exp, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -99,7 +107,9 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					((EntityData) data).spawnEntity(loc);
+					Entity ent = ((EntityData) data).spawnEntity(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(ent, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -119,6 +129,8 @@ public class CustomSpawner implements Runnable
 				if(arePlayersInRange(loc))
 				{
 					Firework fw = ((FireworkData) data).spawnFirework(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(fw, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 					if(fw.getFireworkMeta().getPower() <= 0)
 					{
 						fw.detonate();
@@ -143,7 +155,9 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					((PotionData) data).throwPotion(loc);
+					ThrownPotion pt = ((PotionData) data).throwPotion(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(pt, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -165,6 +179,8 @@ public class CustomSpawner implements Runnable
 				if(arePlayersInRange(loc))
 				{
 					((ParticleData) data).playParticle(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(null, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -183,7 +199,9 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					((EntityData) data).spawnEntity(loc);
+					Boat boat = (Boat)((EntityData) data).spawnEntity(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(boat, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}
@@ -202,7 +220,9 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					((EntityData) data).spawnEntity(loc);
+					Minecart cart = (Minecart)((EntityData) data).spawnEntity(loc);
+					CustomSpawnEvent event = new CustomSpawnEvent(cart, this, data);
+					Bukkit.getPluginManager().callEvent(event);
 				}
 			}
 		}

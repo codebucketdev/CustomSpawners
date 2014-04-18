@@ -1,5 +1,6 @@
 package de.codebucket.customspawners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -14,6 +15,18 @@ public class CustomSpawners extends JavaPlugin implements Listener
 	
 	@Override
 	public void onEnable() 
+	{
+		Bukkit.getScheduler().runTask(this, new Runnable()
+		{
+			@Override
+			public void run() 
+			{
+				enablePlugin();
+			}
+		});
+	}
+	
+	private void enablePlugin()
 	{
 		//LOAD CONFIG
 		instance = this;
@@ -36,6 +49,11 @@ public class CustomSpawners extends JavaPlugin implements Listener
 	
 	@Override
 	public void onDisable()
+	{
+		disablePlugin();
+	}
+	
+	private void disablePlugin()
 	{
 		//STOP SPAWNERS
 		for(CustomSpawner spawner : data.getSpawners())
