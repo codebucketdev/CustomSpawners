@@ -1,6 +1,6 @@
 name: CustomSpawners
 author: Codebucket
-version: 1.5 Release
+version: 1.7 Release
 main: de.codebucket.customspawners.CustomSpawners
 load: POSTWORLD
 website: http://www.codebucket.de
