@@ -85,6 +85,7 @@ public class CustomSpawner implements Runnable
 				if(arePlayersInRange(loc))
 				{
 					ExperienceOrb exp = (ExperienceOrb)((EntityData) data).spawnEntity(loc);
+					exp.setExperience(new Random().nextInt(3) + 1);
 					CustomSpawnEvent event = new CustomSpawnEvent(exp, this, data);
 					Bukkit.getPluginManager().callEvent(event);
 				}
