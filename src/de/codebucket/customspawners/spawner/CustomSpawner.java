@@ -84,7 +84,7 @@ public class CustomSpawner implements Runnable
 			{
 				if(arePlayersInRange(loc))
 				{
-					int experience = 1;
+					int experience = new Random().nextInt(3) +1;
 					ExperienceOrb exp = (ExperienceOrb)((EntityData) data).spawnEntity(loc);
 					exp.setExperience(experience);
 					CustomSpawnEvent event = new CustomSpawnEvent(exp, this, data);
